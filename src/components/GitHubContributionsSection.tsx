@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { CalendarDaysIcon, MailIcon } from "lucide-react";
+import { ArrowUpRight, CalendarDaysIcon, MailIcon } from "lucide-react";
 
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -35,8 +35,7 @@ const LEVEL_CLASSES = [
   "bg-muted-foreground/55",
   "bg-foreground/75",
 ];
-const EMPTY_CONTRIBUTIONS = Array.from({ length: 365 }, (_, index) => ({ date: `Day ${index + 1}`, count: 0, level: 0 }));
-const CACHE_DURATION = 5 * 60 * 1000;
+const CACHE_DURATION = 60 * 60 * 1000;
 let contributionCache: { username: string; data: ContributionsResponse; storedAt: number } | null = null;
 
 const getCachedContributions = (username: string) => contributionCache?.username === username
@@ -61,8 +60,7 @@ export function GitHubContributionsSection({
 
     const loadContributions = async () => {
       try {
-        const url = `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(username)}?y=last`;
-        const response = await fetch(url, { signal: controller.signal });
+        const response = await fetch("/api/github-contributions", { signal: controller.signal });
 
         if (!response.ok) {
           throw new Error('Contribution activity unavailable');
@@ -91,8 +89,7 @@ export function GitHubContributionsSection({
     };
   }, [username]);
 
-  const contributions = data?.contributions ?? EMPTY_CONTRIBUTIONS;
-  const totalLabel = data ? `${data.total.lastYear.toLocaleString()} contributions in the last year` : unavailable ? "Contribution activity temporarily unavailable" : "Loading contribution activity";
+  const totalLabel = data ? `${data.total.lastYear.toLocaleString()} contributions in the last year` : null;
   const monthLabels = data
     ? Array.from(
         new Map(
@@ -106,35 +103,54 @@ export function GitHubContributionsSection({
 
   return (
     <Section className="animate-fade-in" style={{ animationDelay }}>
-      <SectionHeading>Activity</SectionHeading>
+      <SectionHeading>GitHub activity</SectionHeading>
       <div className="rounded-lg border border-border/80 bg-card/80 p-3 transition-colors duration-300 hover:border-foreground/15 sm:p-4">
         <div className="overflow-x-auto rounded-md border border-border/70 bg-background/70 p-3 sm:p-4">
-          <div className="min-w-[660px]">
-            <div className="mb-3 flex justify-between px-0.5 text-xs font-medium text-muted-foreground">
-              {monthLabels.map((month, index) => (
-                <span key={`${month}-${index}`}>{month}</span>
-              ))}
-            </div>
-            <div className="grid grid-flow-col grid-rows-7 gap-[3px]" aria-label={totalLabel}>
-              {contributions.map((contribution) => (
-                <span
-                  key={contribution.date}
-                  title={`${contribution.count} contributions on ${contribution.date}`}
-                  className={`size-2 rounded-[2px] sm:size-2.5 ${LEVEL_CLASSES[contribution.level] ?? LEVEL_CLASSES[0]}`}
-                />
-              ))}
-            </div>
-            <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-              <span>{totalLabel}</span>
-              <span className="flex items-center gap-1.5">
-                <span>Less</span>
-                {LEVEL_CLASSES.map((levelClass) => (
-                  <span key={levelClass} className={`size-2 rounded-[2px] ${levelClass}`} />
+          {data ? (
+            <div className="min-w-[660px]">
+              <div className="mb-3 flex justify-between px-0.5 text-xs font-medium text-muted-foreground">
+                {monthLabels.map((month, index) => (
+                  <span key={`${month}-${index}`}>{month}</span>
                 ))}
-                <span>More</span>
-              </span>
+              </div>
+              <div className="grid grid-flow-col grid-rows-7 gap-[3px]" aria-label={totalLabel ?? undefined}>
+                {data.contributions.map((contribution) => (
+                  <span
+                    key={contribution.date}
+                    title={`${contribution.count} contributions on ${contribution.date}`}
+                    className={`size-2 rounded-[2px] sm:size-2.5 ${LEVEL_CLASSES[contribution.level] ?? LEVEL_CLASSES[0]}`}
+                  />
+                ))}
+              </div>
+              <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
+                <span>{totalLabel}</span>
+                <span className="flex items-center gap-1.5">
+                  <span>Less</span>
+                  {LEVEL_CLASSES.map((levelClass) => (
+                    <span key={levelClass} className={`size-2 rounded-[2px] ${levelClass}`} />
+                  ))}
+                  <span>More</span>
+                </span>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex min-h-36 flex-col items-center justify-center gap-2 text-center">
+              <p role="status" className="text-sm text-muted-foreground">
+                {unavailable ? "Contribution activity is temporarily unavailable." : "Loading contribution activity…"}
+              </p>
+              {unavailable ? (
+                <a
+                  href={`https://github.com/${encodeURIComponent(username)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-9 items-center gap-1 rounded-md px-2 text-xs font-medium text-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  View GitHub activity
+                  <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                </a>
+              ) : null}
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-3 px-1 pt-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
