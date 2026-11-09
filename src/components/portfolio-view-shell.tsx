@@ -80,14 +80,14 @@ export function PortfolioViewShell({
   if (viewMode === "simple") {
     return (
       <div>
-        {simple}
-        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 sm:bottom-8 md:bottom-10">
+        <div className="mx-auto flex w-full max-w-2xl justify-end pb-3 print:hidden">
           <ViewSwitch
             currentView={viewMode}
             onChange={handleViewModeChange}
             aria-label="Switch portfolio view mode"
           />
         </div>
+        {simple}
       </div>
     );
   }
@@ -95,15 +95,14 @@ export function PortfolioViewShell({
   return (
     <div className="relative bg-transparent">
       <main className="relative mx-auto min-h-screen scroll-my-12 overflow-auto pt-2 pb-28 print:p-12">
-        {detailed}
-
-        <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 sm:bottom-6 md:bottom-8">
+        <div className="mx-auto flex w-full max-w-5xl justify-end px-4 pb-3 print:hidden sm:px-6">
           <ViewSwitch
             currentView={viewMode}
             onChange={handleViewModeChange}
             aria-label="Switch portfolio view mode"
           />
         </div>
+        {detailed}
 
         {showChatbot ? <ChatbotWidget /> : null}
       </main>
