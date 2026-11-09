@@ -12,7 +12,7 @@ export function ProjectCard({ title, description, tags, link }: Props) {
   const isExternalLink = link?.startsWith("http");
 
   return (
-    <Card className="flex min-h-[230px] flex-col border border-border/80 p-4 transition-colors duration-300 hover:border-foreground/15">
+    <Card className="flex flex-col gap-3 border border-border/80 p-4 transition-colors duration-300 hover:border-foreground/15 sm:min-h-[230px] sm:gap-5">
       <CardHeader className="p-0 pb-2">
         <CardTitle className="text-sm sm:text-base font-semibold leading-6 text-foreground">
           {link ? (
@@ -37,7 +37,7 @@ export function ProjectCard({ title, description, tags, link }: Props) {
         <p className="text-xs leading-6 sm:text-sm sm:leading-6 text-muted-foreground line-clamp-3">
           {description}
         </p>
-        <div className="mt-auto flex flex-wrap gap-1 pt-3">
+        <div className="mt-3 flex flex-wrap gap-1 pt-1 sm:mt-auto">
           {tags.map((tag) => (
             <Badge
               className="px-1.5 py-0 text-[10px] sm:text-xs print:text-[8px]"

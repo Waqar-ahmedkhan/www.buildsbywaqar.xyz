@@ -3,9 +3,7 @@ import "./globals.css";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { SiteNavigation } from "@/components/SiteNavigation";
-import { IndustryClock } from "@/components/industry-clock";
+import { SiteHeader } from "@/components/site-header";
 import { FluidDotGrid } from "@/components/fluid-dot-grid";
 import { CustomCursor } from "@/components/custom-cursor";
 import { RESUME_DATA } from "@/data/resume-data";
@@ -278,20 +276,9 @@ export default function RootLayout({
           <FluidDotGrid />
           <CustomCursor />
           <div className="relative z-10">
-            <header className="fixed inset-x-0 top-0 z-50 bg-background/90 backdrop-blur-xl print:hidden">
-              <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-                <div className="flex min-h-[4.75rem] items-center justify-between gap-4 py-2 sm:min-h-[5.75rem] sm:gap-6">
-                  <SiteNavigation />
-                  <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-                    <IndustryClock startDate={RESUME_DATA.industryStartDate} />
-                    <ThemeToggle />
-                  </div>
-                </div>
-              </div>
-            </header>
-            <div className="mx-auto w-full max-w-6xl px-4 pt-28 sm:px-6 sm:pt-32 lg:px-8 print:pt-0">
+            <SiteHeader startDate={RESUME_DATA.industryStartDate}>
               {children}
-            </div>
+            </SiteHeader>
           </div>
           <Analytics />
         </ThemeProvider>

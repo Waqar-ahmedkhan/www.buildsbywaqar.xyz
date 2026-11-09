@@ -1,36 +1,18 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
-import { ViewSwitch, type ViewMode } from "@/components/view-switch";
+import { useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
 
-const VIEW_MODE_STORAGE_KEY = "portfolioViewMode";
-const VIEW_MODE_CHANGE_EVENT = "portfolio-view-mode-change";
-const DEFAULT_VIEW_MODE: ViewMode = "detailed";
+import {
+  DEFAULT_VIEW_MODE,
+  getPortfolioViewMode,
+  subscribeToPortfolioViewMode,
+} from "@/lib/portfolio-view-mode";
 
 const ChatbotWidget = dynamic(
   () => import("@/components/ChatbotWidget").then((m) => m.ChatbotWidget),
   { ssr: false, loading: () => null }
 );
-
-const getStoredViewMode = (): ViewMode => {
-  try {
-    const savedViewMode = localStorage.getItem(VIEW_MODE_STORAGE_KEY);
-    return savedViewMode === "simple" || savedViewMode === "detailed" ? savedViewMode : DEFAULT_VIEW_MODE;
-  } catch {
-    return DEFAULT_VIEW_MODE;
-  }
-};
-
-const subscribeToViewMode = (onStoreChange: () => void) => {
-  window.addEventListener("storage", onStoreChange);
-  window.addEventListener(VIEW_MODE_CHANGE_EVENT, onStoreChange);
-
-  return () => {
-    window.removeEventListener("storage", onStoreChange);
-    window.removeEventListener(VIEW_MODE_CHANGE_EVENT, onStoreChange);
-  };
-};
 
 interface PortfolioViewShellProps {
   simple: ReactNode;
@@ -41,7 +23,11 @@ export function PortfolioViewShell({
   simple,
   detailed,
 }: PortfolioViewShellProps) {
-  const viewMode = useSyncExternalStore(subscribeToViewMode, getStoredViewMode, () => DEFAULT_VIEW_MODE);
+  const viewMode = useSyncExternalStore(
+    subscribeToPortfolioViewMode,
+    getPortfolioViewMode,
+    () => DEFAULT_VIEW_MODE
+  );
   const [showChatbot, setShowChatbot] = useState(false);
 
   useEffect(() => {
@@ -64,29 +50,9 @@ export function PortfolioViewShell({
     };
   }, [viewMode]);
 
-  const handleViewModeChange = useCallback((mode: ViewMode) => {
-    setShowChatbot(false);
-
-    try {
-      localStorage.setItem(VIEW_MODE_STORAGE_KEY, mode);
-      window.dispatchEvent(new Event(VIEW_MODE_CHANGE_EVENT));
-    } catch (error) {
-      if (process.env.NODE_ENV === "development") {
-        console.error("Failed to save view mode to localStorage:", error);
-      }
-    }
-  }, []);
-
   if (viewMode === "simple") {
     return (
       <div>
-        <div className="mx-auto flex w-full max-w-2xl justify-end pb-3 print:hidden">
-          <ViewSwitch
-            currentView={viewMode}
-            onChange={handleViewModeChange}
-            aria-label="Switch portfolio view mode"
-          />
-        </div>
         {simple}
       </div>
     );
@@ -95,13 +61,6 @@ export function PortfolioViewShell({
   return (
     <div className="relative bg-transparent">
       <main className="relative mx-auto min-h-screen scroll-my-12 overflow-auto pt-2 pb-28 print:p-12">
-        <div className="mx-auto flex w-full max-w-5xl justify-end px-4 pb-3 print:hidden sm:px-6">
-          <ViewSwitch
-            currentView={viewMode}
-            onChange={handleViewModeChange}
-            aria-label="Switch portfolio view mode"
-          />
-        </div>
         {detailed}
 
         {showChatbot ? <ChatbotWidget /> : null}
