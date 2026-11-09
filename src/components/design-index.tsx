@@ -9,6 +9,7 @@ import {
   Blocks,
   Box,
   CheckCircle2,
+  ChevronDown,
   Compass,
   Film,
   GitBranch,
@@ -250,11 +251,14 @@ export function DesignIndex() {
       <header className="mt-6 border-b border-border/80 pb-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="text-3xl font-semibold tracking-[-0.03em] text-foreground sm:text-5xl">
+            <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+              Curated tools &amp; references
+            </p>
+            <h1 className="text-3xl font-semibold tracking-[-0.04em] text-foreground sm:text-5xl">
               Design Index
             </h1>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-              Find visual direction, product patterns, and tools to make your next interface better.
+              Find the right reference for the interface you’re building.
             </p>
           </div>
         </div>
@@ -262,9 +266,12 @@ export function DesignIndex() {
 
       {/* Agent Playbook: Which Site for What + 12-Point Production Standard */}
       <details className="mt-4 border-b border-border/70 py-3">
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground [&::-webkit-details-marker]:hidden">
-            <span>Build tools</span>
-          <span className="text-xs">Reference guide · Site checklist</span>
+        <summary className="group flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground [&::-webkit-details-marker]:hidden">
+          <span>Build protocol</span>
+          <span className="inline-flex items-center gap-2 text-xs">
+            Task guide · Production checklist
+            <ChevronDown className="size-3.5 transition-transform group-open:rotate-180" aria-hidden="true" />
+          </span>
         </summary>
         <div className="pt-4">
         <div className="flex justify-end border-b border-border/70 pb-3.5">
@@ -385,10 +392,10 @@ export function DesignIndex() {
       </details>
 
       {/* Search */}
-      <div className="sticky top-0 z-20 -mx-1 mt-6 bg-background px-1 py-3">
-        <div className="flex items-center gap-3 border-b border-border/80 px-1 transition-colors focus-within:border-foreground">
+      <div className="mt-6">
+        <div className="flex items-center gap-3 rounded-xl border border-border/80 bg-card/60 px-3 transition-colors focus-within:border-foreground/40 focus-within:bg-card">
           <Search
-            className="size-4 shrink-0 text-muted-foreground"
+            className="size-4 shrink-0 text-muted-foreground/80"
             aria-hidden="true"
           />
           <input
@@ -398,7 +405,7 @@ export function DesignIndex() {
             inputMode="search"
             placeholder="Search sites, components, motion…"
             aria-label="Search design links"
-            className="h-12 min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground/70 [&::-webkit-search-cancel-button]:hidden"
+            className="h-11 min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/70 [&::-webkit-search-cancel-button]:hidden"
           />
           {query ? (
             <button
@@ -413,17 +420,10 @@ export function DesignIndex() {
         </div>
 
         {isSearching ? (
-          <div className="mt-2 flex items-center justify-between">
+          <div className="mt-2 flex items-center justify-between px-1">
             <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
               {resultCount} {resultCount === 1 ? "result" : "results"}
             </p>
-            <button
-              type="button"
-              onClick={() => setQuery("")}
-              className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground underline underline-offset-4 hover:text-foreground"
-            >
-              Clear search
-            </button>
           </div>
         ) : null}
       </div>
@@ -431,8 +431,8 @@ export function DesignIndex() {
       {!isSearching ? (
         <section aria-labelledby="favorites-title" className="mt-7">
           <div className="mb-3">
-            <h2 id="favorites-title" className="text-sm font-semibold text-foreground">Start here</h2>
-            <p className="mt-0.5 text-xs text-muted-foreground">A short list for quick inspiration.</p>
+            <h2 id="favorites-title" className="text-sm font-semibold text-foreground">Quick picks</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">A few strong places to begin.</p>
           </div>
 
           <div className="grid gap-2 sm:grid-cols-2">
@@ -515,7 +515,7 @@ function FavoritePill({ favorite }: { favorite: Favorite }) {
       href={resource.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex min-w-0 items-start gap-3 rounded-xl border border-border/70 bg-card/60 p-3 transition-colors duration-200 hover:border-foreground/20 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="group flex min-h-[7.25rem] min-w-0 items-start gap-3 rounded-xl border border-border/70 bg-card/60 p-3.5 transition-colors duration-200 hover:border-foreground/20 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <span
         className={cn(
@@ -527,7 +527,8 @@ function FavoritePill({ favorite }: { favorite: Favorite }) {
       </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate text-sm font-semibold text-foreground">{resource.name}</span>
-        <span className="mt-0.5 text-xs leading-5 text-muted-foreground">{resource.description}</span>
+        <span className="mt-0.5 block truncate font-mono text-[10px] text-muted-foreground/80">{resource.domain}</span>
+        <span className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{resource.description}</span>
       </span>
       <ArrowUpRight
         className="mt-1 size-3.5 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
@@ -552,7 +553,7 @@ function ResourceRow({
       target="_blank"
       rel="noopener noreferrer"
       title={`${resource.domain} — ${resource.description}`}
-      className="group flex min-w-0 items-start gap-3 rounded-xl border border-border/70 bg-card/40 p-3 transition-colors hover:border-foreground/20 hover:bg-card/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="group flex min-h-[7.5rem] min-w-0 items-start gap-3 rounded-xl border border-border/70 bg-card/40 p-3.5 transition-colors hover:border-foreground/20 hover:bg-card/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <span
         className={cn(
@@ -577,7 +578,10 @@ function ResourceRow({
             aria-hidden="true"
           />
         </span>
-        <span className="mt-0.5 text-xs leading-5 text-muted-foreground">
+        <span className="mt-0.5 block truncate font-mono text-[10px] text-muted-foreground/80">
+          {resource.domain}
+        </span>
+        <span className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
           {resource.description}
         </span>
       </span>
