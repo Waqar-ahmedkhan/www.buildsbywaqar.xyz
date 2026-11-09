@@ -9,6 +9,7 @@ interface IndustryClockProps {
 
 const MINUTE = 60_000;
 const DAY = 86_400_000;
+const pad = (value: number) => String(value).padStart(2, '0');
 
 function getExperience(startDate: string, now: number) {
   const start = new Date(startDate);
@@ -33,15 +34,16 @@ function getExperience(startDate: string, now: number) {
 
   const years = Math.floor(months / 12);
   const days = Math.floor((current.getTime() - getAnniversary(years * 12)) / DAY);
+  const elapsedMinutes = Math.floor((current.getTime() - start.getTime()) / MINUTE);
 
-  return { years, days };
+  return { years, days, hours: Math.floor(elapsedMinutes / 60) % 24, minutes: elapsedMinutes % 60 };
 }
 
 export function IndustryClock({ startDate }: IndustryClockProps) {
   const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
-    const desktop = window.matchMedia('(min-width: 640px)');
+    const desktop = window.matchMedia('(min-width: 1024px)');
     let interval: ReturnType<typeof setInterval> | undefined;
     let initialTick: ReturnType<typeof setTimeout> | undefined;
     const tick = () => setNow(Date.now());
@@ -68,19 +70,22 @@ export function IndustryClock({ startDate }: IndustryClockProps) {
 
   const experience = now === null ? null : getExperience(startDate, now);
   const description = experience
-    ? `${experience.years} years and ${experience.days} days of industry experience`
+    ? `${experience.years} years, ${experience.days} days, ${pad(experience.hours)}:${pad(experience.minutes)} of industry experience`
     : 'Industry experience';
 
   return (
     <div
-      className="hidden items-center gap-2 rounded-md px-2 py-1.5 text-muted-foreground sm:flex"
+      className="hidden items-center gap-2 border-r border-border/70 px-2.5 py-1 text-muted-foreground lg:flex"
       role="group"
       aria-label={description}
       title={description}
     >
       <Clock3 className="size-3.5" aria-hidden="true" />
-      <span className="text-xs font-medium tabular-nums text-foreground">
-        {experience ? `${experience.years}y ${experience.days}d` : '—'}
+      <span className="text-left">
+        <span className="block text-[9px] font-medium uppercase tracking-[0.1em]">Experience</span>
+        <span className="block text-xs font-semibold tabular-nums text-foreground">
+          {experience ? `${experience.years}y ${experience.days}d · ${pad(experience.hours)}:${pad(experience.minutes)}` : '—'}
+        </span>
       </span>
     </div>
   );
