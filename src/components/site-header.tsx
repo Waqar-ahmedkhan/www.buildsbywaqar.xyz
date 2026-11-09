@@ -35,8 +35,8 @@ export function SiteHeader({ startDate, children }: SiteHeaderProps) {
   return (
     <>
       <header className="fixed inset-x-0 top-0 z-50 bg-background/90 backdrop-blur-xl print:hidden">
-        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className={`grid min-h-[4.75rem] grid-cols-1 items-center gap-3 py-2 sm:min-h-[5.75rem] sm:gap-4 ${wideColumns}`}>
+        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className={`grid min-h-[6.25rem] grid-cols-1 items-center gap-3 py-2 sm:gap-4 ${wideColumns}`}>
             <div className="hidden min-w-0 md:block">
               <SiteNavigation />
             </div>
