@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import "./globals.css";
 import Script from "next/script";
-import Link from "next/link";
 import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -280,14 +279,8 @@ export default function RootLayout({
           <CustomCursor />
           <div className="relative z-10">
             <header className="sticky top-2 z-50 mx-auto mb-4 w-full max-w-5xl px-4 pt-2 sm:px-6 lg:px-8 print:hidden">
-              <div className="grid min-h-[5rem] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-1 rounded-xl border border-border/80 bg-background px-2 py-2 sm:min-h-[6.25rem] sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-3 sm:px-3">
-                <Link
-                  href="/"
-                  aria-label="Waqar Ahmed home"
-                  className="flex size-8 items-center justify-center rounded-md text-xs font-semibold tracking-tight text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:size-9 sm:justify-self-start"
-                >
-                  WA
-                </Link>
+              <div className="grid min-h-[5rem] grid-cols-[minmax(0,1fr)_auto] items-center gap-1 rounded-xl border border-border/80 bg-background px-2 py-2 sm:min-h-[6.25rem] sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-3 sm:px-3">
+                <div className="hidden min-w-0 sm:block" aria-hidden="true" />
                 <SiteNavigation />
                 <div className="flex items-center gap-1 sm:justify-self-end sm:gap-2">
                   <IndustryClock startDate={RESUME_DATA.industryStartDate} />
