@@ -278,11 +278,10 @@ export default function RootLayout({
           <FluidDotGrid />
           <CustomCursor />
           <div className="relative z-10">
-            <header className="sticky top-2 z-50 mx-auto mb-4 w-full max-w-5xl px-4 pt-2 sm:px-6 lg:px-8 print:hidden">
-              <div className="grid min-h-[5rem] grid-cols-[minmax(0,1fr)_auto] items-center gap-1 rounded-xl border border-border/80 bg-background px-2 py-2 sm:min-h-[6.25rem] sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-3 sm:px-3">
-                <div className="hidden min-w-0 sm:block" aria-hidden="true" />
+            <header className="sticky top-0 z-50 mx-auto mb-4 w-full max-w-6xl px-4 pt-2 sm:px-6 lg:px-8 print:hidden">
+              <div className="flex min-h-16 items-center justify-between gap-4 bg-background/85 py-2 backdrop-blur-xl sm:min-h-[5.5rem] sm:gap-6">
                 <SiteNavigation />
-                <div className="flex items-center gap-1 sm:justify-self-end sm:gap-2">
+                <div className="flex shrink-0 items-center gap-2 sm:gap-3">
                   <IndustryClock startDate={RESUME_DATA.industryStartDate} />
                   <ThemeToggle />
                 </div>

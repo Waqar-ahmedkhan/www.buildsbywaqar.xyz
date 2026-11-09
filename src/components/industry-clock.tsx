@@ -75,7 +75,7 @@ export function IndustryClock({ startDate }: IndustryClockProps) {
 
   return (
     <div
-      className="hidden items-center gap-2 border-r border-border/70 px-2.5 py-1 text-muted-foreground lg:flex"
+      className="hidden items-center gap-2 px-2.5 py-1 text-muted-foreground lg:flex"
       role="group"
       aria-label={description}
       title={description}
