@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { DiscordIcon } from "@/components/icons";
 import { RESUME_DATA } from "@/data/resume-data";
+import { VisitorCount } from "@/components/visitor-count";
 import { GlobeIcon, MailIcon } from "lucide-react";
 
 const FEATURED_SOCIALS = new Set(["LinkedIn", "X"]);
@@ -32,7 +33,7 @@ export function HeaderSection() {
           <p className="max-w-2xl text-xs leading-6 text-muted-foreground sm:text-sm sm:leading-7">
             {RESUME_DATA.about}
           </p>
-          <p className="text-xs text-muted-foreground sm:text-sm">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground sm:text-sm">
             <a
               className="inline-flex items-center gap-x-1.5 underline-offset-4 transition-colors duration-200 hover:text-foreground hover:underline"
               href={RESUME_DATA.locationLink}
@@ -43,7 +44,8 @@ export function HeaderSection() {
               <GlobeIcon className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
               <span>{RESUME_DATA.location}</span>
             </a>
-          </p>
+            <VisitorCount />
+          </div>
         </div>
         <div className="group relative order-1 justify-self-center shrink-0 sm:order-2 sm:col-start-2 sm:row-start-1 sm:justify-self-end">
           {/* Static blur keeps the soft portrait lighting inexpensive to animate. */}

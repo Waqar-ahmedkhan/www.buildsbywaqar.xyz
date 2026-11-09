@@ -13,6 +13,58 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "images.leslibraires.ca",
+      },
+      {
+        protocol: "https",
+        hostname: "i.ebayimg.com",
+      },
+      {
+        protocol: "https",
+        hostname: "media.s-bol.com",
+      },
+      {
+        protocol: "https",
+        hostname: "arxiv.org",
+      },
+      {
+        protocol: "https",
+        hostname: "react-lm.github.io",
+      },
+      {
+        protocol: "https",
+        hostname: "lilianweng.github.io",
+      },
+      {
+        protocol: "https",
+        hostname: "www-cdn.anthropic.com",
+      },
+      {
+        protocol: "https",
+        hostname: "huyenchip.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.impawards.com",
+      },
+      {
+        protocol: "https",
+        hostname: "moviesmoviesmovies.co.uk",
+      },
+      {
+        protocol: "https",
+        hostname: "images1.penguinrandomhouse.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images2.penguinrandomhouse.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images3.penguinrandomhouse.com",
+      },
     ],
   },
   async headers() {

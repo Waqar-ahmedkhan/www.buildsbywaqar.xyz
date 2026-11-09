@@ -15,6 +15,7 @@ import { VolunteerExperienceSection } from "@/components/VolunteerExperienceSect
 import { PortfolioViewShell } from "@/components/portfolio-view-shell";
 import { ProjectUniverse } from "@/components/project-universe";
 import { DesignIndexSection } from "@/components/DesignIndexSection";
+import { ReadingShelfSection } from "@/components/ReadingShelfSection";
 
 interface Project {
   id: number;
@@ -63,6 +64,7 @@ export default function Page() {
           <EducationSection />
           <div id="projects" className="scroll-mt-6"><ProjectsSection projects={projects} /></div>
           <BlogSection blogProjects={blogProjects} generateExcerpt={generateExcerpt} />
+          <ReadingShelfSection />
           <DesignIndexSection />
           <SkillsSection />
           <CertificationsSection />

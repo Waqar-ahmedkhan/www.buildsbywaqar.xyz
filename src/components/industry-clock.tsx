@@ -1,19 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Clock3 } from 'lucide-react';
 
 interface IndustryClockProps {
   startDate: string;
 }
 
-const SECOND = 1000;
-const DAY = 86400;
-const pad = (value: number) => String(value).padStart(2, '0');
+const MINUTE = 60_000;
+const DAY = 86_400_000;
 
 function getExperience(startDate: string, now: number) {
   const start = new Date(startDate);
   const current = new Date(Math.max(start.getTime(), now));
-  const elapsed = Math.floor((current.getTime() - start.getTime()) / SECOND);
   let months = (current.getUTCFullYear() - start.getUTCFullYear()) * 12 + current.getUTCMonth() - start.getUTCMonth();
 
   const getAnniversary = (offset: number) => {
@@ -21,20 +20,21 @@ function getExperience(startDate: string, now: number) {
     const lastDay = new Date(Date.UTC(month.getUTCFullYear(), month.getUTCMonth() + 1, 0)).getUTCDate();
 
     return Date.UTC(
-      month.getUTCFullYear(), month.getUTCMonth(), Math.min(start.getUTCDate(), lastDay),
-      start.getUTCHours(), start.getUTCMinutes(), start.getUTCSeconds()
+      month.getUTCFullYear(),
+      month.getUTCMonth(),
+      Math.min(start.getUTCDate(), lastDay),
+      start.getUTCHours(),
+      start.getUTCMinutes(),
+      start.getUTCSeconds(),
     );
   };
 
   if (getAnniversary(months) > current.getTime()) months -= 1;
 
   const years = Math.floor(months / 12);
-  const days = Math.floor((current.getTime() - getAnniversary(years * 12)) / (DAY * SECOND));
-  const hours = Math.floor(elapsed / 3600) % 24;
-  const minutes = Math.floor(elapsed / 60) % 60;
-  const seconds = elapsed % 60;
+  const days = Math.floor((current.getTime() - getAnniversary(years * 12)) / DAY);
 
-  return { years, days, hours, minutes, seconds, elapsed };
+  return { years, days };
 }
 
 export function IndustryClock({ startDate }: IndustryClockProps) {
@@ -51,7 +51,7 @@ export function IndustryClock({ startDate }: IndustryClockProps) {
       clearTimeout(initialTick);
       if (document.hidden || !desktop.matches) return;
       initialTick = setTimeout(tick, 0);
-      interval = setInterval(tick, SECOND);
+      interval = setInterval(tick, MINUTE);
     };
 
     sync();
@@ -67,62 +67,21 @@ export function IndustryClock({ startDate }: IndustryClockProps) {
   }, []);
 
   const experience = now === null ? null : getExperience(startDate, now);
-  const since = new Date(startDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
-  const time = experience ? `${pad(experience.hours)}:${pad(experience.minutes)}:${pad(experience.seconds)}` : '--:--:--';
   const description = experience
-    ? `${experience.years} years and ${experience.days} days of industry experience, since ${since}`
-    : `Industry experience since ${since}`;
-
-  const seconds = experience?.seconds ?? 0;
-  const minutes = (experience?.minutes ?? 0) + seconds / 60;
-  const hours = ((experience?.hours ?? 0) % 12) + minutes / 60;
-  const hands = [
-    { angle: hours * 30, end: 23, width: 2.5, className: 'text-foreground' },
-    { angle: minutes * 6, end: 16, width: 1.5, className: 'text-foreground' },
-    { angle: seconds * 6, end: 12, width: 1, className: 'text-foreground' },
-  ];
+    ? `${experience.years} years and ${experience.days} days of industry experience`
+    : 'Industry experience';
 
   return (
     <div
-      className='industry-clock hidden items-center gap-3 rounded-2xl border border-border/80 bg-card px-4 py-2.5 shadow-sm sm:flex'
-      role='group'
+      className="hidden items-center gap-2 rounded-md px-2 py-1.5 text-muted-foreground sm:flex"
+      role="group"
       aria-label={description}
+      title={description}
     >
-      <svg viewBox='0 0 64 64' className='size-11 shrink-0 sm:size-14' aria-hidden='true'>
-        <circle cx='32' cy='32' r='29' className='fill-none stroke-border' strokeWidth='0.6' />
-        {Array.from({ length: 12 }, (_, index) => (
-          <line
-            key={index}
-            x1='32' y1='6' x2='32' y2={index % 3 === 0 ? 11 : 8}
-            transform={`rotate(${index * 30} 32 32)`}
-            className={index % 3 === 0 ? 'stroke-muted-foreground/70' : 'stroke-muted-foreground/30'}
-            strokeWidth={index % 3 === 0 ? 1.2 : 0.7}
-          />
-        ))}
-        {hands.map((hand, index) => (
-          <line
-            key={index}
-            x1='32' y1='35' x2='32' y2={hand.end}
-            transform={`rotate(${hand.angle} 32 32)`}
-            className={hand.className}
-            stroke='currentColor'
-            strokeWidth={hand.width}
-            strokeLinecap='round'
-          />
-        ))}
-        <circle cx='32' cy='32' r='1.7' className='fill-foreground' />
-      </svg>
-      <div className='min-w-24 text-left' aria-hidden='true'>
-        <span className='block text-[9px] font-medium uppercase tracking-[0.12em] text-muted-foreground'>Industry experience</span>
-        <span className='mt-1 block text-xl font-semibold leading-none tracking-tight tabular-nums'>
-          {experience ? experience.years : '--'}<span className='mr-3 ml-1 text-[10px] font-medium text-muted-foreground'>years</span>
-          {experience ? experience.days : '--'}<span className='ml-1 text-[10px] font-medium text-muted-foreground'>days</span>
-        </span>
-        <span className='mt-1 block font-mono text-[11px] font-medium tracking-wider text-foreground tabular-nums'>
-          {time}
-        </span>
-        <span className='mt-0.5 block text-[9px] text-muted-foreground'>since {since}</span>
-      </div>
+      <Clock3 className="size-3.5" aria-hidden="true" />
+      <span className="text-xs font-medium tabular-nums text-foreground">
+        {experience ? `${experience.years}y ${experience.days}d` : '—'}
+      </span>
     </div>
   );
 }
