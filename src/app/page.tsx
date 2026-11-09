@@ -14,6 +14,7 @@ import { AchievementsSection } from "@/components/AchivementsSection";
 import { VolunteerExperienceSection } from "@/components/VolunteerExperienceSection";
 import { PortfolioViewShell } from "@/components/portfolio-view-shell";
 import { ProjectUniverse } from "@/components/project-universe";
+import { DesignIndexSection } from "@/components/DesignIndexSection";
 
 interface Project {
   id: number;
@@ -47,8 +48,8 @@ export default function Page() {
     <PortfolioViewShell
       simple={<SimpleView />}
       detailed={
-        <div className="mx-auto w-full max-w-5xl space-y-4 print:block">
-        <section className="min-w-0 space-y-6 text-foreground sm:space-y-8 md:space-y-10 print:bg-white print:text-black">
+        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 print:block print:px-0">
+        <section className="min-w-0 space-y-7 text-foreground sm:space-y-9 md:space-y-11 print:bg-white print:text-black">
           <div id="profile" className="scroll-mt-6"><HeaderSection /></div>
           <ProjectUniverse projects={[0, 1, 8, 4, 6].map((index) => ({
             techStack: RESUME_DATA.projects[index].techStack.slice(0, 4),
@@ -62,6 +63,7 @@ export default function Page() {
           <EducationSection />
           <div id="projects" className="scroll-mt-6"><ProjectsSection projects={projects} /></div>
           <BlogSection blogProjects={blogProjects} generateExcerpt={generateExcerpt} />
+          <DesignIndexSection />
           <SkillsSection />
           <CertificationsSection />
           <AchievementsSection />

@@ -76,7 +76,7 @@ export function HeaderSection() {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex min-h-[4.5rem] items-center gap-3 rounded-sm border-2 border-dotted border-muted-foreground/70 bg-card/60 p-3 transition-colors duration-200 hover:border-foreground/55 hover:bg-accent/50"
+                className="group flex min-h-[4.5rem] items-center gap-3 rounded-lg border border-border/80 bg-background/50 p-3 transition-colors duration-200 hover:border-foreground/25 hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label={`Follow ${RESUME_DATA.name} on ${details.label}`}
               >
                 <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-foreground text-background transition-transform duration-200 group-hover:scale-105">
@@ -86,7 +86,7 @@ export function HeaderSection() {
                   <span className="block truncate text-sm font-semibold text-foreground">{RESUME_DATA.name}</span>
                   <span className="block text-xs text-muted-foreground">{details.detail}</span>
                 </span>
-                <span className="rounded-sm border border-border bg-background/50 px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors group-hover:border-foreground/75 group-hover:bg-background">
+                <span className="rounded-md border border-border/80 bg-card px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors group-hover:border-foreground/35">
                   Follow
                 </span>
               </a>
@@ -97,7 +97,7 @@ export function HeaderSection() {
             href={RESUME_DATA.contact.discord.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex min-h-[4.5rem] items-center gap-3 rounded-sm border-2 border-dotted border-muted-foreground/70 bg-card/60 p-3 transition-colors duration-200 hover:border-[#5865f2]/70 hover:bg-[#5865f2]/10"
+            className="group flex min-h-[4.5rem] items-center gap-3 rounded-lg border border-border/80 bg-background/50 p-3 transition-colors duration-200 hover:border-[#5865f2]/50 hover:bg-[#5865f2]/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label={`Join ${RESUME_DATA.contact.discord.name} on Discord`}
           >
             <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-[#5865f2] text-white transition-transform duration-200 group-hover:scale-105">
@@ -110,7 +110,7 @@ export function HeaderSection() {
               </span>
               <span className="block text-xs text-muted-foreground">{RESUME_DATA.contact.discord.description}</span>
             </span>
-            <span className="rounded-sm bg-[#5865f2] px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors group-hover:bg-[#4752c4]">
+            <span className="rounded-md bg-[#5865f2] px-2.5 py-1.5 text-xs font-semibold text-white transition-colors group-hover:bg-[#4752c4]">
               Join ›
             </span>
           </a>

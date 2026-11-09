@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import "./globals.css";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { IndustryClock } from "@/components/industry-clock";
@@ -284,6 +285,7 @@ export default function RootLayout({
               {children}
             </div>
           </div>
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
